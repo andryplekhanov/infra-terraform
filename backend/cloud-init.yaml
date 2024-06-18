@@ -1,0 +1,22 @@
+#cloud-config
+timezone: 'Europe/Moscow'
+datasource:
+  Ec2:
+    strict_id: false
+ssh_pwauth: no
+package_update: true
+package_upgrade: true
+packages:
+  - unzip
+  - jq
+  - git
+runcmd:
+ - [ sudo, curl, -L, --output, '/usr/local/bin/gitlab-runner', 'https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64' ]
+ - [ sudo, chmod, +x , '/usr/local/bin/gitlab-runner' ]
+ - [ sudo, useradd, --create-home, gitlab-runner, --shell, '/bin/bash' ]
+ - [ sudo, gitlab-runner, install, --user=gitlab-runner, --working-directory=/home/gitlab-runner ]
+ - [ sudo, gitlab-runner, start ]
+ - sudo sed -i '/$/s/^/#/' /home/gitlab-runner/.bash_logout
+ - [ curl, -LO, 'https://hashicorp-releases.yandexcloud.net/terraform/1.8.5/terraform_1.8.5_linux_amd64.zip' ]
+ - [ unzip, 'terraform_1.8.5_linux_amd64.zip' ]
+ - [ sudo, mv, './terraform' , '/bin/' ]

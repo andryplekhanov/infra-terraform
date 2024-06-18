@@ -1,0 +1,7 @@
+.idea
+.env
+.key.json
+.terraform/
+*.lock.hcl
+*.tfstate
+.DS_Store
